@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('license_plate')->unique();
             $table->double('fuel_consumption');
-            $table->text('image');
             $table->unsignedBigInteger('jenis_kendaraan_id');
             $table->unsignedBigInteger('lokasi_penyimpanan_id');
             $table->date('service_date')->nullable();

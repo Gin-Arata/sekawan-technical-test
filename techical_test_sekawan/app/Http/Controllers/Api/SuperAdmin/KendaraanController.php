@@ -20,7 +20,6 @@ class KendaraanController
             'name'=> 'required|string',
             'license_plate'=> 'required|string',
             'fuel_consumption' => 'required|integer',
-            'image' => 'required',
             'jenis_kendaraan_id' => 'required|integer',
             'lokasi_penyimpanan_id' => 'required|integer',
             'service_date' => 'date',
@@ -32,13 +31,6 @@ class KendaraanController
             return response()->json([
                 'message' => 'License plate already exist',
             ], 400);
-        }
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time().'.'.$image->extension();
-            $imagePath = $image->storeAs('images/kendaraan', $imageName, 'public');
-            $validated['image'] = $imagePath;
         }
 
         $kendaraan = KendaraanModel::create($validated);
@@ -67,20 +59,6 @@ class KendaraanController
             $kendaraan->lokasi_penyimpanan_id = $validated['lokasi_penyimpanan_id'];
             $kendaraan->service_date = $validated['service_date'];
             $kendaraan->last_used = $validated['last_used'];
-
-            if ($request->hasFile('image')) {
-                // Hapus gambar lama jika ada
-                if ($kendaraan->image) {
-                    Storage::disk('public')->delete($kendaraan->image);
-                }
-
-                // Simpan gambar baru
-                $image = $request->file('image');
-                $imageName = time().'.'.$image->extension();
-                $imagePath = $image->storeAs('images/kendaraan', $imageName, 'public');
-                $validated['image'] = $imagePath;
-                $kendaraan->image = $validated['image'];
-            }
 
             $kendaraan->save();
 

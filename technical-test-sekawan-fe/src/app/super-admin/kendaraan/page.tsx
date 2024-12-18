@@ -51,14 +51,6 @@ export default function KendaraanPage() {
   const [selectedKendaraan, setSelectedKendaraan] = useState<Kendaraan | null>(
     null
   );
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  // handle file change
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
-    }
-  };
 
   //   fetch api Kendaraan data
   const fetchKendaraan = async () => {
@@ -161,11 +153,6 @@ export default function KendaraanPage() {
   // start of handle submit
   const handleSubmit = async (e: any, url: string, method: string) => {
     e.preventDefault();
-    const formData = new FormData();
-
-    if (selectedFile) {
-        formData.append("image", selectedFile);
-    }
 
     try {
       const response = await fetch(`${url}`, {
@@ -173,7 +160,15 @@ export default function KendaraanPage() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: formData,
+        body: JSON.stringify({
+          name: e.target.name.value,
+          license_plate: e.target.license_plate.value,
+          fuel_consumption: e.target.fuel_consumption.value,
+          jenis_kendaraan_id: e.target.jenis_kendaraan_id.value,
+          lokasi_penyimpanan_id: e.target.lokasi_penyimpanan_id.value,
+          service_date: e.target.service_date.value,
+          last_used: e.target.last_used.value,
+        }),
       });
 
       if (!response.ok) {
@@ -419,21 +414,6 @@ export default function KendaraanPage() {
                 placeholder="Terakhir Digunakan"
                 className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
               />
-              <div className="flex items-center">
-                <label className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                  Pilih File
-                  <input
-                    type="file"
-                    name="image"
-                    accept="image/jpeg"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                </label>
-                {selectedFile && (
-                  <span className="ml-4 text-gray-700">{selectedFile.name}</span>
-                )}
-              </div>
             </div>
             <div className="flex justify-end">
               <button
@@ -578,15 +558,6 @@ export default function KendaraanPage() {
                   } as Kendaraan)
                 }
                 placeholder="Terakhir Digunakan"
-                className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
-              />
-              <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-                Gambar Kendaraan
-              </label>
-              <input
-                type="file"
-                name="image"
-                accept="image/jpeg"
                 className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
               />
             </div>

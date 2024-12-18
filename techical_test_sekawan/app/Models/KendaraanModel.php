@@ -16,7 +16,6 @@ class KendaraanModel extends Model
         "name",
         "license_plate",
         "fuel_consumption",
-        "image",
         "jenis_kendaraan_id",
         "lokasi_penyimpanan_id",
         "service_date",
