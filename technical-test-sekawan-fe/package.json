@@ -1,0 +1,36 @@
+{
+  "name": "technical-test-sekawan-fe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.1",
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@types/node": "22.10.2",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
+    "autoprefixer": "10.4.20",
+    "chart.js": "^4.4.7",
+    "eslint": "9.16.0",
+    "eslint-config-next": "15.1.0",
+    "file-saver": "^2.0.5",
+    "next": "15.1.0",
+    "postcss": "8.4.49",
+    "react": "19.0.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-data-table-component": "^7.6.2",
+    "react-dom": "19.0.0",
+    "tailwindcss": "3.4.16",
+    "typescript": "5.7.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.7"
+  }
+}
