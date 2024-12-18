@@ -8,8 +8,8 @@
     - Laravel (Backend)
     - NextJS/React (Frontend)
 
-# How To Start Project
-## Start Laravel
+# How To Start Application
+## Start Laravel/Backend
 - Setelah melakukan cloning repo ini harap mengisi file `.env` terlebih dahulu. Hal yang diisi : 
 ```
 DB_CONNECTION=mysql
@@ -39,7 +39,7 @@ php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-## Start NextJS
+## Start NextJS/Frontend
 - Setelah melakukan cloning repo harap mengubah file `.env.local.example` terlebih dahulu, dengan menambahkan : 
 ```
 // untuk port dan host bisa diganti menyesuaikan local anda
