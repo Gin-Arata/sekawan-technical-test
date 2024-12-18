@@ -28,6 +28,7 @@ export default function SewaKendaraanPage() {
     tambang_tujuan_id: "",
     tanggal_sewa: "",
     tanggal_kembali: "",
+    user_id: 0,
     status: "Pending",
   });
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -86,12 +87,23 @@ export default function SewaKendaraanPage() {
   };
 
   useEffect(() => {
+    fetchUser();
     fetchTambang();
     fetchKendaraan();
-    fetchUser();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  useEffect(() => {
+    if (user) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        user_id: user.id,
+      }));
+    }
+  }, [user]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -109,7 +121,6 @@ export default function SewaKendaraanPage() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
-        user_id: user?.id,
         ...formData,
       }),
     });
@@ -123,6 +134,7 @@ export default function SewaKendaraanPage() {
         tambang_tujuan_id: "",
         tanggal_sewa: "",
         tanggal_kembali: "",
+        user_id: 0,
         status: "Pending",
       });
     }
@@ -132,7 +144,12 @@ export default function SewaKendaraanPage() {
     <div className="p-4">
       <h1 className="text-3xl font-bold">Sewa Kendaraan</h1>
       <div className="flex justify-center w-full">
-        <form className="space-y-4 w-full border rounded-md p-4" method="POST" onSubmit={handleSubmit}>
+        <form
+          className="space-y-4 w-full border rounded-md p-4"
+          method="POST"
+          onSubmit={handleSubmit}
+        >
+          <input type="hidden" value={formData.user_id} name="user_id" />
           <input type="hidden" value={formData.status} name="status" />
           <div>
             <label htmlFor="kendaraan_id">Kendaraan</label>

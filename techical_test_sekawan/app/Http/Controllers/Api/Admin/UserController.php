@@ -9,7 +9,7 @@ use App\Http\Resources\ResponseResource;
 class UserController
 {
     public function index() {
-        $users = UserModel::with('role')->where('role_id', 5)->get();
+        $users = UserModel::with('role')->get();
 
         $userArray = $users->toArray();
         $excludeKeys = ['password'];

@@ -63,9 +63,20 @@ interface User {
   updated_at: Date;
 }
 
+interface Driver {
+  id: number;
+  name: string;
+  role_id: number;
+  email: string;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export default function DaerahPage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [history, setHistory] = useState<HistoryPenyewaan[]>([]);
+  const [driver, setDriver] = useState<Driver[]>([]);
   const [user, setUser] = useState<User[]>([]);
   const [tambang, setTambang] = useState<Tambang[]>([]);
   const [kendaraan, setKendaraan] = useState<Kendaraan[]>([]);
@@ -128,12 +139,14 @@ export default function DaerahPage() {
       const dataKendaraan = await kendaraanResponse.json();
       const dataKantor = await kantorResponse.json();
       const dataUser = await userResponse.json();
+      const filteredDataUser = dataUser.data.filter((u) => u.role_id === 5);
       setLoading(false);
       setHistory(Array.isArray(dataHistory.data) ? dataHistory.data : []);
       setTambang(Array.isArray(dataTambang.data) ? dataTambang.data : []);
       setKendaraan(Array.isArray(dataKendaraan.data) ? dataKendaraan.data : []);
       setKantor(Array.isArray(dataKantor.data) ? dataKantor.data : []);
       setUser(Array.isArray(dataUser.data) ? dataUser.data : []);
+      setDriver(Array.isArray(filteredDataUser) ? filteredDataUser : []);
     } catch (e) {
       console.error("Error fetching daerah data ", e);
       setLoading(false);
@@ -380,7 +393,7 @@ export default function DaerahPage() {
                 className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
               >
                 <option value="">Pilih Driver</option>
-                {user.map((u) => (
+                {driver.map((u) => (
                   <option key={u.id} value={u.id}>
                     {u.name}
                   </option>
