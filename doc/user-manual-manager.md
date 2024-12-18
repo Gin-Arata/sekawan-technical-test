@@ -1,8 +1,8 @@
 # User Manual (Manager)
 ## Terima Sewa
-- Untuk melakukan penerimaan sewa anda bisa klik button `pena`, seperti gambar di bawah ini :
+- Untuk melakukan penerimaan sewa anda bisa klik button `pena`, seperti gambar di bawah ini : <br>
 ![Gambar terima sewa](./image/terima-sewa(1).png)
-- Kemudian mengisi statusnya, seperti gambar dibawah ini :
+- Kemudian mengisi statusnya, seperti gambar dibawah ini : <br>
 ![Gambar form terima sewa](./image/terima-sewa(2).png)
 
 ## Laporan Tambang
@@ -23,5 +23,5 @@
 ### Melakukan Ekspor Excel
 - untuk melakukan ekspor excel anda bisa klik button `Export Excel`<br>
 ![Gambar Ekspor History](./image/ekspor-history(1).png)
-- Kemudian file excel akan otomatis terdownload dan berada di folder `downloads atau di tempat yang sudah anda taruh` : 
+- Kemudian file excel akan otomatis terdownload dan berada di folder `downloads atau di tempat yang sudah anda taruh` : <br>
 ![Gambar form Ekspor History](./image/ekspor-history(2).png)

@@ -1,6 +1,6 @@
 # User Manual (Pegawai)
 ## Sewa Kendaraan
-- Untuk melakukan penyewaan kendaraan anda bisa klik menu sidebar `Sewa Kendaraan` Kemudian isi form yang sudah disediakan :
+- Untuk melakukan penyewaan kendaraan anda bisa klik menu sidebar `Sewa Kendaraan` Kemudian isi form yang sudah disediakan :<br>
 ![Gambar Sewa Kendaraan](./image/sewa-kendaraan.png)
 
 ## Laporan Kendaraan
