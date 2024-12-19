@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Manager;
 use Illuminate\Http\Request;
 use App\Models\HistoryPenyewaanModel;
 use App\Http\Resources\ResponseResource;
+use App\Models\KendaraanModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -78,6 +79,13 @@ class HistoryPenyewaanController
         ]);
 
         $history = HistoryPenyewaanModel::find($id);
+
+        if($validated['status'] == 'Approved') {
+            Log::info("Update last used kendaraan");
+            $kendaraan = KendaraanModel::find($history->kendaraan_id);
+            $kendaraan->last_used = $history->tanggal_kembali;
+            $kendaraan->save();
+        }
 
         if ($history) {
             $history->status = $validated['status'];
