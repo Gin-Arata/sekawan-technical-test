@@ -7,13 +7,16 @@ use App\Models\HistoryPenyewaanModel;
 use App\Http\Resources\ResponseResource;
 use App\Models\KendaraanModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HistoryPenyewaanController
 {
     public function index() {
+        Log::info('Fetching history penyewaan for user: ' . Auth::user()->id);
         $histories = HistoryPenyewaanModel::where('user_id', Auth::user()->id)->get();
 
         if ($histories->isEmpty()) {
+            Log::warning('No history penyewaan found for user: ' . Auth::user()->id);
             return response()->json([
                 'message' => 'Data history penyewaan is empty',
             ], 404);
@@ -23,6 +26,7 @@ class HistoryPenyewaanController
     }
 
     public function getStatistic() {
+        Log::info('Fetching statistics for history penyewaan for user: ' . Auth::user()->id);
         $histories = HistoryPenyewaanModel::where('user_id', Auth::user()->id)->get();
         $totalHistories = $histories->count();
 
@@ -53,13 +57,15 @@ class HistoryPenyewaanController
             'status' => 'required|string',
         ]);
 
-        HistoryPenyewaanModel::create($validated);
+        $history = HistoryPenyewaanModel::create($validated);
+        Log::info('History penyewaan created: ' . $history->id);
 
         $kendaraan = KendaraanModel::find($validated['kendaraan_id']);
 
         if ($kendaraan) {
             $kendaraan->last_used = $validated['tanggal_kembali'];
             $kendaraan->save();
+            Log::info('Kendaraan updated with last used date: ' . $kendaraan->last_used);
         }
 
         return new ResponseResource(200,'Data history penyewaan was created', $validated);
