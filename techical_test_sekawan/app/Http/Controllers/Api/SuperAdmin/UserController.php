@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\SuperAdmin;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Resources\ResponseResource;
+use Illuminate\Support\Facades\Log;
 
 class UserController
 {
     public function index() {
+        Log::info('Fetching all users');
         $users = UserModel::all();
 
         $userArray = $users->toArray();
@@ -19,6 +21,7 @@ class UserController
     }
 
     public function getStatistic() {
+        Log::info('Fetching user statistics');
         $users = UserModel::all();
         $totalUsers = $users->count();
 
@@ -42,6 +45,7 @@ class UserController
 
         $userDuplicate = UserModel::where('email', $validated['email'])->first();
         if ($userDuplicate) {
+            Log::warning('Attempt to create duplicate user: ' . $validated['email']);
             return response()->json([
                 'message' => 'Email already exists',
             ], 400);
@@ -50,6 +54,7 @@ class UserController
         $validated['password'] = bcrypt($validated['password']);
 
         $user = UserModel::create($validated);
+        Log::info('User created: ' . $user->name);
 
         $userArray = $user->toArray();
         $excludeKeys = ['password', 'created_at', 'updated_at'];
@@ -76,6 +81,7 @@ class UserController
             }
             $user->role_id = $validated['role_id'];
             $user->save();
+            Log::info('User updated: ' . $user->name);
 
             $userArray = $user->toArray();
             $excludeKeys = ['password', 'created_at', 'updated_at'];
@@ -83,18 +89,25 @@ class UserController
 
             return new ResponseResource(200, 'Updated User', $filteredUser);
         }
+
+        Log::warning('Attempt to update non-existent user with id: ' . $id);
+        return response()->json([
+            'message' => 'User not found',
+        ], 404);
     }
 
     public function destroy($id) {
         $user = UserModel::find($id);
 
         if (!$user) {
+            Log::warning('Attempt to delete non-existent user with id: ' . $id);
             return response()->json([
                 'message' => 'User not found',
             ], 404);
         }
 
         $user->delete();
+        Log::info('User deleted: ' . $user->name);
 
         return new ResponseResource(200, 'User Has Been Deleted', []);
     }

@@ -6,16 +6,19 @@ use App\Http\Resources\ResponseResource;
 use App\Models\HistoryPenyewaanModel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class HistoryPenyewaanController
 {
     public function index() {
+        Log::info('Fetching all history penyewaan');
         $histories = HistoryPenyewaanModel::all();
 
         return new ResponseResource(200, 'List data histories', $histories);
     }
 
     public function getStatistic() {
+        Log::info('Fetching statistics for history penyewaan');
         $histories = HistoryPenyewaanModel::all();
         $totalHistories = $histories->count();
 
@@ -25,6 +28,7 @@ class HistoryPenyewaanController
     }
 
     public function getHistoryPerMonth() {
+        Log::info('Fetching history penyewaan per month');
         $currentYear = Carbon::now()->year;
         $histories = HistoryPenyewaanModel::whereYear('created_at', $currentYear)->get();
 
@@ -51,7 +55,8 @@ class HistoryPenyewaanController
             'status' => 'required|string',
         ]);
 
-        HistoryPenyewaanModel::create($validated);
+        $history = HistoryPenyewaanModel::create($validated);
+        Log::info('History penyewaan created: ' . $history->id);
 
         return new ResponseResource(200,'Data history penyewaan was created', $validated);
     }
@@ -74,10 +79,12 @@ class HistoryPenyewaanController
             $history->driver_id = $validated['driver_id'];
             $history->status = $validated['status'];
             $history->save();
+            Log::info('History penyewaan updated: ' . $history->id);
 
             return new ResponseResource(200,'Data history penyewaan was updated', $history);
         }
 
+        Log::warning('Attempt to update non-existent history penyewaan with id: ' . $id);
         return response()->json([
             'message' => 'Data history penyewaan not found'
         ], 404);
@@ -87,12 +94,14 @@ class HistoryPenyewaanController
         $history = HistoryPenyewaanModel::find($id);
 
         if (!$history) {
+            Log::warning('Attempt to delete non-existent history penyewaan with id: ' . $id);
             return response()->json([
                 'message' => 'Data history penyewaan not found'
             ], 404);
         }
 
         $history->delete();
+        Log::info('History penyewaan deleted: ' . $history->id);
 
         return new ResponseResource(200,'Data history was deleted', []);
     }

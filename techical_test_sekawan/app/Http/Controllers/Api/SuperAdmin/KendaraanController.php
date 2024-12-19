@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api\SuperAdmin;
 use App\Http\Resources\ResponseResource;
 use App\Models\KendaraanModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class KendaraanController
 {
     public function index() {
+        Log::info('Fetching all kendaraan');
         $kendaraan = KendaraanModel::all();
 
         return new ResponseResource(200, 'List data kendaraan', $kendaraan);
@@ -28,12 +29,14 @@ class KendaraanController
 
         $kendaraanDuplicated = KendaraanModel::where('license_plate', $validated['license_plate'])->first();
         if ($kendaraanDuplicated) {
+            Log::warning('Attempt to create duplicate kendaraan: ' . $validated['license_plate']);
             return response()->json([
                 'message' => 'License plate already exist',
             ], 400);
         }
 
         $kendaraan = KendaraanModel::create($validated);
+        Log::info('Kendaraan created: ' . $kendaraan->name);
 
         return new ResponseResource(200,'Data kendaraan was created', $kendaraan);
     }
@@ -61,10 +64,12 @@ class KendaraanController
             $kendaraan->last_used = $validated['last_used'];
 
             $kendaraan->save();
+            Log::info('Kendaraan updated: ' . $kendaraan->name);
 
             return new ResponseResource(200, 'Data kendaraan was updated', $kendaraan);
         }
 
+        Log::warning('Attempt to update non-existent kendaraan with id: ' . $id);
         return response()->json([
             'message'=> 'Kendaraan not found',
         ], 404);
@@ -74,13 +79,15 @@ class KendaraanController
         $kendaraan = KendaraanModel::find($id);
 
         if (!$kendaraan) {
+            Log::warning('Attempt to delete non-existent kendaraan with id: ' . $id);
             return response()->json([
                 'message'=> 'Kendaraan not found',
             ], 404);
         }
 
         $kendaraan->delete();
+        Log::info('Kendaraan deleted: ' . $kendaraan->name);
 
-        return new ResponseResource(200,'Data kendaraas was deleted', []);
+        return new ResponseResource(200,'Data kendaraan was deleted', []);
     }
 }
