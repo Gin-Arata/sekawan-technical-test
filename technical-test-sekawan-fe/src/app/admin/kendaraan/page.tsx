@@ -51,14 +51,6 @@ export default function KendaraanPage() {
   const [selectedKendaraan, setSelectedKendaraan] = useState<Kendaraan | null>(
     null
   );
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  // handle file change
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
-    }
-  };
 
   //   fetch api Kendaraan data
   const fetchKendaraan = async () => {
@@ -161,19 +153,23 @@ export default function KendaraanPage() {
   // start of handle submit
   const handleSubmit = async (e: any, url: string, method: string) => {
     e.preventDefault();
-    const formData = new FormData();
-
-    if (selectedFile) {
-        formData.append("image", selectedFile);
-    }
 
     try {
       const response = await fetch(`${url}`, {
         method: method,
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: formData,
+        body: JSON.stringify({
+          name: e.currentTarget.name.value,
+          license_plate: e.currentTarget.license_plate.value,
+          fuel_consumption: e.currentTarget.fuel_consumption.value,
+          jenis_kendaraan_id: e.currentTarget.jenis_kendaraan_id.value,
+          lokasi_penyimpanan_id: e.currentTarget.lokasi_penyimpanan_id.value,
+          service_date: e.currentTarget.service_date.value,
+          last_used: e.currentTarget.last_used.value,
+        }),
       });
 
       if (!response.ok) {
@@ -344,7 +340,7 @@ export default function KendaraanPage() {
         title="Tambah Kendaraan"
       >
         <div>
-          <form method="POST" onSubmit={handleAddDataSubmit} encType="multipart/form-data">
+          <form method="POST" onSubmit={handleAddDataSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Nama Kendaraan
@@ -419,21 +415,6 @@ export default function KendaraanPage() {
                 placeholder="Terakhir Digunakan"
                 className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
               />
-              <div className="flex items-center">
-                <label className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                  Pilih File
-                  <input
-                    type="file"
-                    name="image"
-                    accept="image/jpeg"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                </label>
-                {selectedFile && (
-                  <span className="ml-4 text-gray-700">{selectedFile.name}</span>
-                )}
-              </div>
             </div>
             <div className="flex justify-end">
               <button
@@ -456,7 +437,7 @@ export default function KendaraanPage() {
       {/* Edit modal */}
       <Modal isOpen={addModalEdit} onClose={closeModal} title="Edit Kendaraan">
         <div>
-          <form method="PATCH" onSubmit={handleEditDataSubmit} encType="multipart/form-data">
+          <form method="PATCH" onSubmit={handleEditDataSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Nama Kendaraan
@@ -484,7 +465,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    license_plate: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Plat Nomor"
@@ -500,7 +481,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    fuel_consumption: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Konsumsi BBM (L/100km)"
@@ -516,7 +497,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    jenis_kendaraan_id: e.target.value,
                   } as Kendaraan)
                 }
               >
@@ -537,7 +518,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    lokasi_penyimpanan_id: e.target.value,
                   } as Kendaraan)
                 }
               >
@@ -558,7 +539,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    service_date: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Tanggal Servis"
@@ -574,19 +555,10 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    last_used: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Terakhir Digunakan"
-                className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
-              />
-              <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-                Gambar Kendaraan
-              </label>
-              <input
-                type="file"
-                name="image"
-                accept="image/jpeg"
                 className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
               />
             </div>

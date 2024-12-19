@@ -20,7 +20,7 @@ class KendaraanController
         $validated = $request->validate([
             'name'=> 'required|string',
             'license_plate'=> 'required|string',
-            'fuel_consumption' => 'required|integer',
+            'fuel_consumption' => 'required|numeric',
             'jenis_kendaraan_id' => 'required|integer',
             'lokasi_penyimpanan_id' => 'required|integer',
             'service_date' => 'date',
@@ -45,7 +45,7 @@ class KendaraanController
         $validated = $request->validate([
             'name'=> 'string',
             'license_plate'=> 'string',
-            'fuel_consumption' => 'integer',
+            'fuel_consumption' => 'numeric',
             'jenis_kendaraan_id' => 'integer',
             'lokasi_penyimpanan_id' => 'integer',
             'service_date' => 'date',

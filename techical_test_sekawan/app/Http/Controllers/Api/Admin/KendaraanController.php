@@ -21,8 +21,7 @@ class KendaraanController
         $validated = $request->validate([
             'name'=> 'required|string',
             'license_plate'=> 'required|string',
-            'fuel_consumption' => 'required|double',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'fuel_consumption' => 'required',
             'jenis_kendaraan_id' => 'required|integer',
             'lokasi_penyimpanan_id' => 'required|integer',
             'service_date' => 'date',
@@ -48,8 +47,7 @@ class KendaraanController
         $validated = $request->validate([
             'name'=> 'string',
             'license_plate'=> 'string',
-            'fuel_consumption' => 'double',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'fuel_consumption' => 'numeric',
             'jenis_kendaraan_id' => 'integer',
             'lokasi_penyimpanan_id' => 'integer',
             'service_date' => 'date',
@@ -62,7 +60,6 @@ class KendaraanController
             $kendaraan->name = $validated['name'];
             $kendaraan->license_plate = $validated['license_plate'];
             $kendaraan->fuel_consumption = $validated['fuel_consumption'];
-            $kendaraan->image = $validated['image'];
             $kendaraan->jenis_kendaraan_id = $validated['jenis_kendaraan_id'];
             $kendaraan->lokasi_penyimpanan_id = $validated['lokasi_penyimpanan_id'];
             $kendaraan->service_date = $validated['service_date'];

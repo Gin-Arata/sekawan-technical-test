@@ -532,17 +532,17 @@ export default function DaerahPage() {
                 <option value="Approved">Approved</option>
                 <option value="Rejected">Rejected</option>
               </select>
-              {/* <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
                 Tanggal Sewa
               </label>
               <input
                 type="date"
-                name="created_at"
-                value={selectedHistory?.created_at || ""}
+                name="tanggal_sewa"
+                value={selectedHistory?.tanggal_sewa}
                 onChange={(e) =>
                   setSelectedHistory({
                     ...selectedHistory,
-                    created_at: e.target.value,
+                    tanggal_sewa: e.target.value,
                   } as HistoryPenyewaan)
                 }
                 placeholder="Tanggal Sewa"
@@ -553,17 +553,17 @@ export default function DaerahPage() {
               </label>
               <input
                 type="date"
-                name="updated_at"
-                value={selectedHistory?.updated_at || ""}
+                name="tanggal_kembali"
+                value={selectedHistory?.tanggal_kembali}
                 onChange={(e) =>
                   setSelectedHistory({
                     ...selectedHistory,
-                    updated_at: e.target.value,
+                    tanggal_kembali: e.target.value,
                   } as HistoryPenyewaan)
                 }
                 placeholder="Tanggal Kembali"
                 className="border border-gray-300 p-2 rounded-md w-full focus:outline-blue-400"
-              /> */}
+              />
             </div>
             <div className="flex justify-end">
               <button

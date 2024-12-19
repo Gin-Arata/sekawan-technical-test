@@ -158,6 +158,7 @@ export default function KendaraanPage() {
       const response = await fetch(`${url}`, {
         method: method,
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
@@ -464,7 +465,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    license_plate: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Plat Nomor"
@@ -480,7 +481,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    fuel_consumption: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Konsumsi BBM (L/100km)"
@@ -496,7 +497,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    jenis_kendaraan_id: e.target.value,
                   } as Kendaraan)
                 }
               >
@@ -517,7 +518,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    lokasi_penyimpanan_id: e.target.value,
                   } as Kendaraan)
                 }
               >
@@ -538,7 +539,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    service_date: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Tanggal Servis"
@@ -554,7 +555,7 @@ export default function KendaraanPage() {
                 onChange={(e) =>
                   setSelectedKendaraan({
                     ...selectedKendaraan,
-                    name: e.target.value,
+                    last_used: e.target.value,
                   } as Kendaraan)
                 }
                 placeholder="Terakhir Digunakan"
