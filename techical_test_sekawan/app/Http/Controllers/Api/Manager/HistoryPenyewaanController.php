@@ -6,16 +6,19 @@ use Illuminate\Http\Request;
 use App\Models\HistoryPenyewaanModel;
 use App\Http\Resources\ResponseResource;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class HistoryPenyewaanController
 {
     public function index() {
+        Log::info('Fetching all history penyewaan with driver');
         $histories = HistoryPenyewaanModel::whereNotNull('driver_id')->get();
 
         return new ResponseResource(200, 'List data histories', $histories);
     }
 
     public function getStatistic() {
+        Log::info('Fetching statistics for history penyewaan');
         $histories = HistoryPenyewaanModel::all();
         $totalHistories = $histories->count();
 
@@ -37,9 +40,11 @@ class HistoryPenyewaanController
     }
 
     public function getPendingHistory() {
+        Log::info('Fetching pending history penyewaan with driver');
         $histories = HistoryPenyewaanModel::where('status', 'Pending')->whereNotNull('driver_id')->get();
 
         if ($histories->isEmpty()) {
+            Log::warning('No pending history penyewaan found');
             return response()->json([
                 'message' => 'Data history penyewaan is empty',
             ], 200);
@@ -49,6 +54,7 @@ class HistoryPenyewaanController
     }
 
     public function getHistoryPerMonth() {
+        Log::info('Fetching history penyewaan per month');
         $currentYear = Carbon::now()->year;
         $histories = HistoryPenyewaanModel::whereYear('created_at', $currentYear)->get();
 
@@ -76,10 +82,12 @@ class HistoryPenyewaanController
         if ($history) {
             $history->status = $validated['status'];
             $history->save();
+            Log::info('History penyewaan updated: ' . $history->id);
 
             return new ResponseResource(200,'Data history penyewaan was updated', $history);
         }
 
+        Log::warning('Attempt to update non-existent history penyewaan with id: ' . $id);
         return response()->json([
             'message' => 'Data history penyewaan not found'
         ], 404);
